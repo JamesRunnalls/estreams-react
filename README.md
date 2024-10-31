@@ -1,1 +1,1 @@
-# estreams-react
+# Estreams Frontend
