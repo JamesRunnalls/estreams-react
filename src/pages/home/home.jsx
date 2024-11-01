@@ -95,6 +95,7 @@ class Home extends Component {
       zoomControl: false,
       center: [55, 17],
       zoom: 3,
+      minZoom: 3,
     });
     L.control
       .attribution({
