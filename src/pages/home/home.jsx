@@ -16,6 +16,7 @@ class Home extends Component {
   state = {
     sidebar: false,
     basin_data: false,
+    loading: true,
   };
   setBasin = async (e) => {
     try {
@@ -86,6 +87,7 @@ class Home extends Component {
     markers.addLayer(geoJsonLayer);
     this.map.addLayer(markers);
     this.map.flyToBounds(markers.getBounds());
+    this.setState({ loading: false });
   };
   async componentDidMount() {
     this.map = L.map("map", {
@@ -111,7 +113,7 @@ class Home extends Component {
   }
   render() {
     document.title = "EStreams";
-    const { basin_data, sidebar } = this.state;
+    const { basin_data, sidebar, loading } = this.state;
     return (
       <React.Fragment>
         <div className="main">
@@ -133,9 +135,13 @@ class Home extends Component {
                   ))}
                 </div>
                 <div className="contact">
-                  Check <a href="https://www.nature.com/articles/s41597-024-03706-1">here</a> for more information about the
-                  Estreams project and describing paper. © 2024. Contact the
-                  author with questions or comments. Open dataset at{" "}
+                  Check{" "}
+                  <a href="https://www.nature.com/articles/s41597-024-03706-1">
+                    here
+                  </a>{" "}
+                  for more information about the Estreams project and describing
+                  paper. © 2024. Contact the author with questions or comments.
+                  Open dataset at{" "}
                   <a href="https://zenodo.org/records/13154470">Zenodo</a>.
                 </div>
                 <div className="close" onClick={this.closeBasin}>
@@ -145,6 +151,7 @@ class Home extends Component {
             )}
           </div>
           <div className={sidebar ? "map small" : "map"}>
+            {loading && <span class="loader"></span>}
             <div id="map" />
           </div>
           <div className="footer">
