@@ -1,15 +1,15 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import axios from "axios";
-import Select from "react-select";
 import L from "leaflet";
+import Header from "../../components/header";
+import Footer from "../../components/footer";
+import CONFIG from "../../config.json";
+import download from "../../img/download.png";
 import "leaflet.markercluster";
 import "./css/leaflet.css";
 import "./css/markercluster.css";
 import "./css/markerclusterdefault.css";
-import icon from "../../img/icon.png";
-import eawag from "../../img/eawag.png";
-import uzh from "../../img/uzh.png";
-import tudelft from "../../img/tudelft.png";
 import "../../App.css";
 
 class Home extends Component {
@@ -22,12 +22,9 @@ class Home extends Component {
     try {
       this.map.removeLayer(this.basin);
     } catch (e) {}
-    const latlng = e.latlng;
     const id = e.target.options.id;
     const { data } = await axios
-      .get(
-        `https://estreams.s3.eu-central-1.amazonaws.com/catchments/${id}.geojson`
-      )
+      .get(`${CONFIG.estreams_bucket}/catchments/${id}.geojson`)
       .catch((error) => {
         console.error(error);
       });
@@ -59,7 +56,7 @@ class Home extends Component {
   plotStations = async () => {
     const setBasin = this.setBasin;
     const { data } = await axios
-      .get("https://estreams.s3.eu-central-1.amazonaws.com/network.geojson")
+      .get(`${CONFIG.estreams_bucket}/network.geojson`)
       .catch((error) => {
         console.error(error);
       });
@@ -69,7 +66,6 @@ class Home extends Component {
       iconAnchor: [16, 32],
       tooltipAnchor: [0, -32],
     });
-
     const markers = L.markerClusterGroup();
     const geoJsonLayer = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
@@ -115,51 +111,62 @@ class Home extends Component {
   render() {
     document.title = "EStreams";
     const { basin_data, sidebar, loading } = this.state;
+    console.log(basin_data);
     return (
       <React.Fragment>
         <div className="main">
-          <div className="icon">
-            <img src={icon} />
-            <div className="description">
+          <Header />
+          <div className="map">
+            {loading && <span className="loader"></span>}
+            <div id="map" />
+            <div className="tagline">
               An integrated dataset and catalogue of streamflow, hydro-climatic
               and landscape variables for Europe.
             </div>
-          </div>
-          <div className={sidebar ? "sidebar open" : "sidebar"}>
-            {basin_data && (
-              <div className="sidebar-inner">
-                <div className="properties">
-                  {Object.entries(basin_data).map(([key, value]) => (
-                    <div key={key} className="property">
-                      <strong>{key}:</strong> {value}
+            <div className={sidebar ? "sidebar open" : "sidebar"}>
+              {basin_data && (
+                <div className="sidebar-inner">
+                  <div className="title">{basin_data["basin_id"]}</div>
+                  <div className="properties">
+                    <div className="property">
+                      <strong>Gauge ID:</strong> {basin_data["gauge_id"]}
                     </div>
-                  ))}
+                    <div className="property">
+                      <strong>Catchment area:</strong>{" "}
+                      {basin_data["area_estreams"]} km²
+                    </div>
+                    <div className="property">
+                      <strong>Period of record:</strong>{" "}
+                      {basin_data["start_date"].slice(0, 4)} -{" "}
+                      {basin_data["end_date"].slice(0, 4)}
+                    </div>
+                    <div className="property">
+                      <strong>Provider:</strong> {basin_data["provider_name"]}
+                    </div>
+                  </div>
+                  <div className="buttons">
+                    <NavLink
+                      className="station"
+                      to={`/${basin_data["basin_id"]}`}
+                    >
+                      Station page
+                    </NavLink>
+                    <a
+                      href={`${CONFIG.estreams_bucket}/data/${basin_data["basin_id"]}.zip`}
+                      className="download"
+                      title="Download catchment data"
+                    >
+                      <img src={download} alt="Download" />
+                    </a>
+                  </div>
+                  <div className="close" onClick={this.closeBasin}>
+                    &#x2715;
+                  </div>
                 </div>
-                <div className="contact">
-                  Check{" "}
-                  <a href="https://www.nature.com/articles/s41597-024-03706-1">
-                    here
-                  </a>{" "}
-                  for more information about the Estreams project and describing
-                  paper. © 2024. Contact the author with questions or comments.
-                  Open dataset at{" "}
-                  <a href="https://zenodo.org/records/13154470">Zenodo</a>.
-                </div>
-                <div className="close" onClick={this.closeBasin}>
-                  Close
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-          <div className={sidebar ? "map small" : "map"}>
-            {loading && <span class="loader"></span>}
-            <div id="map" />
-          </div>
-          <div className="footer">
-            <img src={eawag} style={{ height: 50 }} />
-            <img src={uzh} style={{ height: 50 }} />
-            <img src={tudelft} style={{ height: 70, paddingBottom: 5 }} />
-          </div>
+          <Footer />
         </div>
       </React.Fragment>
     );
