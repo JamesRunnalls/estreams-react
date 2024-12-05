@@ -137,8 +137,7 @@ class Home extends Component {
                     </div>
                     <div className="property">
                       <strong>Period of record:</strong>{" "}
-                      {basin_data["start_date"].slice(0, 4)} -{" "}
-                      {basin_data["end_date"].slice(0, 4)}
+                      {basin_data["record_period"]}
                     </div>
                     <div className="property">
                       <strong>Provider:</strong> {basin_data["provider_name"]}
