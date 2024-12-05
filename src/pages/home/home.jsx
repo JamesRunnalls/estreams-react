@@ -18,11 +18,32 @@ class Home extends Component {
     basin_data: false,
     loading: true,
   };
-  setBasin = async (e) => {
+  setBasin = async (event) => {
+    const marker = event.target;
     try {
       this.map.removeLayer(this.basin);
     } catch (e) {}
-    const id = e.target.options.id;
+    const id = event.target.options.id;
+    if (this.selectedMarker) {
+      this.selectedMarker.setIcon(
+        L.icon({
+          iconUrl: `${process.env.PUBLIC_URL}/marker.png`,
+          iconSize: [32, 32],
+          iconAnchor: [16, 32],
+          tooltipAnchor: [0, -32],
+        })
+      );
+    }
+    marker.setIcon(
+      L.icon({
+        iconUrl: `${process.env.PUBLIC_URL}/marker_red.png`,
+        iconSize: [50, 50],
+        iconAnchor: [25, 50],
+        tooltipAnchor: [0, -50],
+      })
+    );
+    this.selectedMarker = marker;
+
     const { data } = await axios
       .get(`${CONFIG.estreams_bucket}/catchments/${id}.geojson`)
       .catch((error) => {
@@ -50,6 +71,17 @@ class Home extends Component {
   closeBasin = () => {
     try {
       this.map.removeLayer(this.basin);
+      if (this.selectedMarker) {
+        this.selectedMarker.setIcon(
+          L.icon({
+            iconUrl: `${process.env.PUBLIC_URL}/marker.png`,
+            iconSize: [32, 32],
+            iconAnchor: [16, 32],
+            tooltipAnchor: [0, -32],
+          })
+        );
+      }
+      this.selectedMarker = null;
     } catch (e) {}
     this.setState({ basin_data: false, sidebar: false });
   };
@@ -93,6 +125,7 @@ class Home extends Component {
       zoom: 3,
       minZoom: 3,
     });
+    this.selectedMarker = null;
     L.control
       .attribution({
         position: "bottomleft",
@@ -111,7 +144,6 @@ class Home extends Component {
   render() {
     document.title = "EStreams";
     const { basin_data, sidebar, loading } = this.state;
-    console.log(basin_data);
     return (
       <React.Fragment>
         <div className="main">

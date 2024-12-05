@@ -18,7 +18,6 @@ class Station extends Component {
       var { data } = await axios.get(
         `${CONFIG.estreams_bucket}/catchments/${id}.geojson`
       );
-      console.log(data);
       this.setState({ id });
     } catch (e) {
       console.error(e);
