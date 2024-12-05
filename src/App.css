@@ -3,6 +3,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  margin: 0;
+}
+
 :root {
   --padding: 20px;
   --sidebar-width: 350px;
@@ -14,6 +18,14 @@
   --base-color: rgb(8, 24, 50);
   --dark-grey: #9ea1a4;
   --light-grey: #f4f5f5;
+}
+
+h1 {
+  color: var(--base-color);
+}
+
+p {
+  font-size: 18px;
 }
 
 /* Loading */
@@ -43,14 +55,18 @@
   }
 }
 
-/* Home */
+/* General */
 
-.main {
-  position: fixed;
-  top: 0;
-  left: 0;
+.main {}
+
+.main .content {
+  max-width: 700px;
+  margin: auto;
   width: 100%;
-  height: 100%;
+  padding: var(--padding);
+  margin-top: 20px;
+  box-sizing: border-box;
+  margin-bottom: var(--footer-height);
 }
 
 .main .header {
@@ -95,9 +111,27 @@
   display: inline-block;
 }
 
+
+.main .footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: var(--padding);
+  text-align: center;
+  background-color: white;
+}
+
+.main .footer img {
+  height: 20px;
+  margin-right: 60px;
+}
+
+/* Home */
+
 .main .map {
   width: calc(100% - var(--padding)* 2);
-  height: calc(100% - var(--header-height) - var(--footer-height));
+  height: calc(100vh - var(--header-height) - var(--footer-height));
   display: inline-block;
   position: relative;
   margin: 0 var(--padding);
@@ -125,8 +159,10 @@
   padding: calc(var(--padding) / 2);
   max-width: 300px;
   font-size: 18px;
-  background-color: hsla(0, 0%, 100%, .3);
+  background-color: #ffffffed;
   border-radius: 0 0 12px 0;
+  box-shadow: var(--box-shadow);
+  color: var(--base-color);
 }
 
 .main .sidebar {
@@ -241,18 +277,86 @@
   filter: invert(100%);
 }
 
-.main .footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: var(--padding);
-  text-align: center;
+/* About */
+
+.main .content .authors {
+  font-weight: 600;
+  margin: var(--padding) 0;
+  font-size: 18px;
 }
 
-.main .footer img {
-  height: 20px;
-  margin-right: 60px;
+.main .content .developer {
+  font-size: 14px;
+}
+
+/* Station */
+
+.main .content .horizontal-navigation {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: var(--padding);
+}
+
+.main .content .horizontal-navigation .nav-item {
+  display: inline-block;
+  font-size: 18px;
+  padding: 12px 18px;
+  color: var(--dark-grey);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+
+.main .content .horizontal-navigation .nav-item:hover {
+  color: var(--base-color);
+}
+
+.main .content .horizontal-navigation .nav-item.active {
+  color: var(--base-color);
+  border-bottom: 2px solid var(--base-color);
+}
+
+.main .content .content-inner .item {
+  display: inline-block;
+  padding: 8px 0;
+}
+
+.main .content .content-inner .item .item-key {
+  display: inline-block;
+  width: 160px;
+  font-weight: 600;
+  padding-right: 8px;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+.main .content .content-inner .item .item-value {
+  display: inline-block;
+  width: 160px;
+  padding-right: 8px;
+  box-sizing: border-box;
+  vertical-align: top;
+  word-break: break-word;
+}
+
+.main .content .content-inner .download-buttons a {
+  display: inline-block;
+  border: 1px solid var(--base-color);
+  cursor: pointer;
+  margin-right: 20px;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--base-color);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.main .content .content-inner .download-buttons {
+  margin: 30px 0 10px 0;
+}
+
+.main .content .content-inner .download-buttons a:hover {
+  background-color: var(--base-color);
+  color: white;
 }
 
 @media screen and (max-width: 800px) {
@@ -277,10 +381,15 @@
 
   .main .sidebar {
     top: unset;
-    bottom: 0;
-    width: 100%;
-    padding: 20px 20px 85px 20px;
-    right: 0;
+    bottom: calc(var(--padding) / 2);
+    width: calc(100% - var(--padding));
+    right: calc(var(--padding) / 2);
+    background-color: #ffffffeb;
+  }
+
+  .main .content {
+    margin-top: 0;
+    padding-top: 0;
   }
 
   .main .footer {
@@ -294,4 +403,13 @@
     width: 25%;
     margin: 0 4%;
   }
+
+  .main .content .horizontal-navigation {
+    border: none;
+  }
+
+  .main .content .horizontal-navigation .nav-item {
+    font-size: 14px;
+    padding: 4px;
+}
 }

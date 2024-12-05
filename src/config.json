@@ -1,3 +1,56 @@
 {
-  "estreams_bucket": "https://estreams.s3.eu-central-1.amazonaws.com"
+  "estreams_bucket": "https://estreams.s3.eu-central-1.amazonaws.com",
+  "station": {
+    "gauge_id": "Gauge id",
+    "gauge_name": "Name",
+    "country": "Country",
+    "lon_snap": "Longitude",
+    "lat_snap": "Latitude",
+    "gauges_upstream": "N gauges upstream",
+    "record_period": "Period of record",
+    "num_years": "N of years",
+    "num_days_gaps": "N of days with gaps",
+    "gauge_flag": "Gauge flag",
+    "duplicated_suspect": "Duplicated suspect",
+    "area_estreams": "Area [km2]",
+    "area_official": "Area official [km2]",
+    "area_rel": "Relative difference [%]",
+    "area_flag": "Area flag"
+  },
+  "data": {
+    "q_mean": "Mean discharge [mm/day]",
+    "q_5": "Low flows (Q5) [mm/day]",
+    "q_95": "High flows (Q95) [mm/day]",
+    "q_runoff_ratio": "Runoff ratio [-]",
+    "hfd_mean": "Mean half-flow-date [day]",
+    "baseflow_index": "Baseflow index [-]",
+    "p_mean": "Mean precipitation [mm/day]",
+    "pet_mean": "Mean PET [mm/day]",
+    "aridity": "Aridity [-]",
+    "frac_snow": "Fraction of snow [-]",
+    "lp_time": "Low precipitation season",
+    "hp_time": "High-precipitation season",
+    "ele_mt_mean": "Mean elevation [m.a.s.l.]",
+    "root_dep_mean": "Mean root depth [cm]",
+    "lit_dom_name": "Dominant geology",
+    "lakes_num": "Number of lakes",
+    "dam_num": "Number of dams",
+    "ndvi_mean": "Mean NDVI [-]"
+  },
+  "provider": {
+    "provider_id": "Provider id",
+    "provider_name": "Provider name",
+    "provider_country": "Provider country",
+    "license_redistribution": "License type",
+    "num_stations": "N of stations",
+    "record_period_provider": "Full period range",
+    "download_method": "Download method",
+    "download_type": "Download difficulty",
+    "platform": "Platform",
+    "website": "Official website",
+    "source_streamflow": "Streamflow URL",
+    "source_license": "License URL",
+    "source_gauges_infos": "Metadata URL",
+    "observations": "Observations"
+  }
 }

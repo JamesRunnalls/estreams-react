@@ -19,30 +19,32 @@ class Home extends Component {
     loading: true,
   };
   setBasin = async (event) => {
+    if (this.hiddenMarker) {
+      this.stations.addLayer(this.hiddenMarker);
+      this.hiddenMarker = null;
+    }
     const marker = event.target;
+    const latLng = marker.getLatLng();
     try {
       this.map.removeLayer(this.basin);
     } catch (e) {}
     const id = event.target.options.id;
+    this.stations.removeLayer(marker);
+    this.hiddenMarker = marker;
+    const redIcon = L.icon({
+      iconUrl: `${process.env.PUBLIC_URL}/marker_red.png`,
+      iconSize: [45, 50],
+      iconAnchor: [22.5, 50],
+      tooltipAnchor: [0, -50],
+    });
+
     if (this.selectedMarker) {
-      this.selectedMarker.setIcon(
-        L.icon({
-          iconUrl: `${process.env.PUBLIC_URL}/marker.png`,
-          iconSize: [32, 32],
-          iconAnchor: [16, 32],
-          tooltipAnchor: [0, -32],
-        })
-      );
+      this.selectedMarker.remove();
+      this.selectedMarker = null;
     }
-    marker.setIcon(
-      L.icon({
-        iconUrl: `${process.env.PUBLIC_URL}/marker_red.png`,
-        iconSize: [50, 50],
-        iconAnchor: [25, 50],
-        tooltipAnchor: [0, -50],
-      })
-    );
-    this.selectedMarker = marker;
+    this.selectedMarker = L.marker([latLng.lat, latLng.lng], {
+      icon: redIcon,
+    }).addTo(this.map);
 
     const { data } = await axios
       .get(`${CONFIG.estreams_bucket}/catchments/${id}.geojson`)
@@ -71,18 +73,15 @@ class Home extends Component {
   closeBasin = () => {
     try {
       this.map.removeLayer(this.basin);
-      if (this.selectedMarker) {
-        this.selectedMarker.setIcon(
-          L.icon({
-            iconUrl: `${process.env.PUBLIC_URL}/marker.png`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            tooltipAnchor: [0, -32],
-          })
-        );
-      }
-      this.selectedMarker = null;
     } catch (e) {}
+    if (this.selectedMarker) {
+      this.selectedMarker.remove();
+      this.selectedMarker = null;
+    }
+    if (this.hiddenMarker) {
+      this.stations.addLayer(this.hiddenMarker);
+      this.hiddenMarker = null;
+    }
     this.setState({ basin_data: false, sidebar: false });
   };
   plotStations = async () => {
@@ -94,11 +93,11 @@ class Home extends Component {
       });
     const customIcon = L.icon({
       iconUrl: `${process.env.PUBLIC_URL}/marker.png`,
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
+      iconSize: [30, 32],
+      iconAnchor: [15, 32],
       tooltipAnchor: [0, -32],
     });
-    const markers = L.markerClusterGroup();
+    this.stations = L.markerClusterGroup();
     const geoJsonLayer = L.geoJSON(data, {
       onEachFeature: function (feature, layer) {
         layer.bindTooltip(feature.properties.basin_id, {
@@ -112,9 +111,9 @@ class Home extends Component {
         }).on("click", setBasin);
       },
     });
-    markers.addLayer(geoJsonLayer);
-    this.map.addLayer(markers);
-    this.map.flyToBounds(markers.getBounds());
+    this.stations.addLayer(geoJsonLayer);
+    this.map.addLayer(this.stations);
+    this.map.flyToBounds(this.stations.getBounds());
     this.setState({ loading: false });
   };
   async componentDidMount() {
@@ -126,6 +125,8 @@ class Home extends Component {
       minZoom: 3,
     });
     this.selectedMarker = null;
+    this.hiddenMarker = null;
+    this.stations = null;
     L.control
       .attribution({
         position: "bottomleft",
