@@ -85,8 +85,13 @@ p {
   height: 20px;
 }
 
-.main .header .about {
+.main .header .links {
   position: absolute;
+  top: 10px;
+  right: var(--padding);
+}
+
+.main .header .links .about {
   cursor: pointer;
   padding: 10px 10px;
   background-color: var(--light-grey);
@@ -98,12 +103,37 @@ p {
   width: 20px;
   text-align: center;
   text-decoration: none;
-  top: 10px;
-  right: var(--padding);
+  position: relative;
+  display: inline-block;
 }
 
-.main .header .about:hover {
+.main .header .links .about:hover {
   color: var(--base-color)
+}
+
+.main .header .links .home {
+  cursor: pointer;
+  padding: 10px 10px;
+  background-color: var(--light-grey);
+  color: var(--dark-grey);
+  border-radius: 42px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 20px;
+  width: 20px;
+  text-align: center;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.main .header .links .home img {
+  opacity: 0.3;
+}
+
+.main .header .links .home:hover img {
+  opacity: 1;
 }
 
 .main .header .search {
@@ -339,6 +369,10 @@ p {
   word-break: break-word;
 }
 
+.main .content .content-inner .item.wide .item-value {
+  width: calc(100% - 160px);
+}
+
 .main .content .content-inner .download-buttons a {
   display: inline-block;
   border: 1px solid var(--base-color);
@@ -407,10 +441,17 @@ p {
 
   .main .content .horizontal-navigation {
     border: none;
+    margin-bottom: 10px;
   }
 
   .main .content .horizontal-navigation .nav-item {
-    font-size: 14px;
     padding: 4px;
+    width: 122px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
   }
 }

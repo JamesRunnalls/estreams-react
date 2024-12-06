@@ -31,6 +31,7 @@ class Station extends Component {
   }
   render() {
     var { id, metadata, error, selected } = this.state;
+    console.log(metadata);
     document.title = `${id} | EStreams`;
     return (
       <React.Fragment>
@@ -78,24 +79,43 @@ class Station extends Component {
                   {["station", "data", "provider"].includes(selected) && (
                     <React.Fragment>
                       {Object.keys(CONFIG[selected]).map((key) => (
-                        <div className="item">
+                        <div
+                          className={
+                            ["observations"].includes(key)
+                              ? "item wide"
+                              : "item"
+                          }
+                          key={key}
+                        >
                           <div className="item-key">
                             {CONFIG[selected][key]}:
                           </div>
                           <div className="item-value">
                             {key in metadata["features"][0]["properties"] ? (
-                              metadata["features"][0]["properties"][
-                                key
-                              ].includes("https") ? (
+                              metadata["features"][0]["properties"][key].slice(
+                                0,
+                                5
+                              ) === "https" ? (
                                 <a
                                   href={
                                     metadata["features"][0]["properties"][key]
                                   }
+                                  target="_blank"
+                                  rel="noopener noreferrer"
                                 >
                                   {metadata["features"][0]["properties"][key]}
                                 </a>
                               ) : (
-                                metadata["features"][0]["properties"][key]
+                                <div>
+                                  {metadata["features"][0]["properties"][key]
+                                    .split(";")
+                                    .map((part, index) => (
+                                      <React.Fragment key={index}>
+                                        {part}
+                                        <br /><br />
+                                      </React.Fragment>
+                                    ))}
+                                </div>
                               )
                             ) : (
                               "-"
@@ -123,11 +143,19 @@ class Station extends Component {
                       <p>
                         The full dataset with data for all stations is available
                         at our{" "}
-                        <a href="https://zenodo.org/records/13961394">
+                        <a
+                          href="https://zenodo.org/records/13961394"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           Zenodo repository
                         </a>
                         . Please refer to the{" "}
-                        <a href="https://www.nature.com/articles/s41597-024-03706-1">
+                        <a
+                          href="https://www.nature.com/articles/s41597-024-03706-1"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           EStreams paper
                         </a>{" "}
                         (published at Nature Scientific Data), for a detailed
