@@ -14,10 +14,10 @@ class Header extends Component {
           </NavLink>
         </div>
         <div className="links">
-          <NavLink className="home" to="/">
+          <NavLink className="home" to="/" title="Home">
             <img src={home_icon} alt="home" />
           </NavLink>
-          <NavLink className="about" to="about">
+          <NavLink className="about" to="about" title="About">
             ?
           </NavLink>
         </div>

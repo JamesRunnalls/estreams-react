@@ -94,8 +94,8 @@ class Station extends Component {
                             {key in metadata["features"][0]["properties"] ? (
                               metadata["features"][0]["properties"][key].slice(
                                 0,
-                                5
-                              ) === "https" ? (
+                                4
+                              ) === "http" ? (
                                 <a
                                   href={
                                     metadata["features"][0]["properties"][key]
