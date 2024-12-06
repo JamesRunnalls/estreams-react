@@ -31,7 +31,6 @@ class Station extends Component {
   }
   render() {
     var { id, metadata, error, selected } = this.state;
-    console.log(metadata);
     document.title = `${id} | EStreams`;
     return (
       <React.Fragment>
