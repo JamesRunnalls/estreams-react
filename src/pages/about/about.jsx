@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Header from "../../components/header";
 import Footer from "../../components/footer";
+import logo from "../../img/logo.png";
 import "../../App.css";
 
 class About extends Component {
@@ -13,6 +14,10 @@ class About extends Component {
         <div className="main">
           <Header />
           <div className="content">
+            <div className="about-logo">
+              <img src={logo} alt="logo" className="logo" />
+            </div>
+
             <p>
               EStreams is an extensive catalog of openly available stream
               records, along with a dataset of hydro-climatic variables and

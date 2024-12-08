@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
 import axios from "axios";
 import L from "leaflet";
 import Header from "../../components/header";
@@ -11,12 +10,23 @@ import "./css/leaflet.css";
 import "./css/markercluster.css";
 import "./css/markerclusterdefault.css";
 import "../../App.css";
+import Station from "../../components/station";
 
 class Home extends Component {
   state = {
     sidebar: false,
     basin_data: false,
     loading: true,
+    selected: false,
+    station: false,
+  };
+  toggleStation = () => {
+    this.setState({ station: !this.state.station });
+  };
+  closeStation = (event) => {
+    if (!document.getElementById("station-inner").contains(event.target)) {
+      this.setState({ station: false });
+    }
   };
   setBasin = async (event) => {
     if (this.hiddenMarker) {
@@ -53,7 +63,7 @@ class Home extends Component {
       });
     var basin_data = data["features"][0]["properties"];
     basin_data["basin_id"] = id;
-    this.setState({ basin_data, sidebar: true }, async () => {
+    this.setState({ basin_data, sidebar: true, selected: id }, async () => {
       this.basin = L.geoJSON(data["features"][0], {
         style: function (feature) {
           return {
@@ -67,7 +77,9 @@ class Home extends Component {
       });
       this.map.addLayer(this.basin);
       var bounds = this.basin.getBounds();
-      this.map.fitBounds(bounds);
+      this.map.flyToBounds(bounds, {
+        duration: 1,
+      });
     });
   };
   closeBasin = () => {
@@ -82,7 +94,7 @@ class Home extends Component {
       this.stations.addLayer(this.hiddenMarker);
       this.hiddenMarker = null;
     }
-    this.setState({ basin_data: false, sidebar: false });
+    this.setState({ basin_data: false, sidebar: false, selected: false });
   };
   plotStations = async () => {
     const setBasin = this.setBasin;
@@ -127,11 +139,6 @@ class Home extends Component {
     this.selectedMarker = null;
     this.hiddenMarker = null;
     this.stations = null;
-    L.control
-      .attribution({
-        position: "bottomleft",
-      })
-      .addTo(this.map);
     new L.Control.Zoom({ position: "topright" }).addTo(this.map);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
@@ -144,7 +151,8 @@ class Home extends Component {
   }
   render() {
     document.title = "EStreams";
-    const { basin_data, sidebar, loading } = this.state;
+    const { basin_data, sidebar, loading, selected, station } = this.state;
+    document.title = selected ? `${selected} | EStreams` : "EStreams";
     return (
       <React.Fragment>
         <div className="main">
@@ -177,12 +185,9 @@ class Home extends Component {
                     </div>
                   </div>
                   <div className="buttons">
-                    <NavLink
-                      className="station"
-                      to={`/${basin_data["basin_id"]}`}
-                    >
-                      Station page
-                    </NavLink>
+                    <div className="open-station" onClick={this.toggleStation}>
+                      Station details
+                    </div>
                     <a
                       href={`${CONFIG.estreams_bucket}/data/${basin_data["basin_id"]}.zip`}
                       className="download"
@@ -192,6 +197,19 @@ class Home extends Component {
                     </a>
                   </div>
                   <div className="close" onClick={this.closeBasin}>
+                    &#x2715;
+                  </div>
+                </div>
+              )}
+            </div>
+            <div
+              className={station ? "station open" : "station"}
+              onClick={this.closeStation}
+            >
+              {basin_data && (
+                <div className="station-inner" id="station-inner">
+                  <Station basin_data={basin_data} />
+                  <div className="close" onClick={this.toggleStation}>
                     &#x2715;
                   </div>
                 </div>
