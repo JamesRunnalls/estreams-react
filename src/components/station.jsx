@@ -12,10 +12,9 @@ class Station extends Component {
   render() {
     var { selected } = this.state;
     var { basin_data } = this.props;
-
     return (
       <React.Fragment>
-        <h1>Station {basin_data["basin_id"]}</h1>
+        <h1>{basin_data["basin_id"]}</h1>
         <div className="horizontal-navigation">
           <div
             className={selected === "station" ? "nav-item active" : "nav-item"}
@@ -45,59 +44,71 @@ class Station extends Component {
         <div className="content-inner">
           {["station", "data", "provider"].includes(selected) && (
             <React.Fragment>
-              {Object.keys(CONFIG[selected]).map((key) => (
-                <div
-                  className={
-                    ["observations"].includes(key) ? "item wide" : "item"
-                  }
-                  key={key}
-                >
-                  <div className="item-key">{CONFIG[selected][key]}:</div>
-                  <div className="item-value">
-                    {key in basin_data ? (
-                      basin_data[key].slice(0, 4) === "http" ? (
-                        <a
-                          href={basin_data[key]}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {basin_data[key]}
-                        </a>
+              {Object.keys(CONFIG[selected])
+                .filter((k) => basin_data[k] !== "nan")
+                .map((key) => (
+                  <div
+                    className={
+                      ["observations"].includes(key) ? "item wide" : "item"
+                    }
+                    key={key}
+                  >
+                    <div className="item-key">{CONFIG[selected][key]}:</div>
+                    <div className="item-value">
+                      {key in basin_data ? (
+                        basin_data[key].slice(0, 4) === "http" ? (
+                          <a
+                            href={basin_data[key]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {basin_data[key]}
+                          </a>
+                        ) : (
+                          <div>
+                            {basin_data[key].split(";").map((part, index) => (
+                              <React.Fragment key={index}>
+                                {part}
+                                <br />
+                                <br />
+                              </React.Fragment>
+                            ))}
+                          </div>
+                        )
                       ) : (
-                        <div>
-                          {basin_data[key].split(";").map((part, index) => (
-                            <React.Fragment key={index}>
-                              {part}
-                              <br />
-                              <br />
-                            </React.Fragment>
-                          ))}
-                        </div>
-                      )
-                    ) : (
-                      "-"
-                    )}
+                        "-"
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </React.Fragment>
           )}
           {selected === "download" && (
             <React.Fragment>
-              <div className="download-buttons">
+              <div className="download">
+                <div className="title">
+                  Data package for hydrological modeling
+                </div>
+                <p>
+                  This zip file contains the available catchment attibutes and
+                  metrelogical data (daily) needed for hydrological modeling.
+                </p>
                 <a
                   href={`${CONFIG.estreams_bucket}/data/${basin_data["basin_id"]}.zip`}
                 >
-                  Station data
+                  Download
                 </a>
-                <a
-                  href={`${CONFIG.estreams_bucket}/catchments/${basin_data["basin_id"]}.geojson`}
-                >
-                  Station metadata
-                </a>
+                <div className="title">All stations</div>
+                <p>GeoJSON file of all 17,000+ stations.</p>
                 <a href={`${CONFIG.estreams_bucket}/network.geojson`}>
-                  Station metadata
+                  Download
                 </a>
+                <div className="title">Streamflow data</div>
+                <p>
+                  We are unable to provide the streamflow data directly due to
+                  data use restrictions. Please see <b>Provider info</b> for
+                  information on how to access the data directly.
+                </p>
               </div>
               <p>
                 The full dataset with data for all stations is available at our{" "}

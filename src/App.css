@@ -216,6 +216,28 @@ p {
   color: var(--base-color);
 }
 
+.main .map .filters {
+  position: absolute;
+  top: 93px;
+  z-index: 999;
+  left: -1px;
+}
+
+.main .map .filters .filter {
+  margin-bottom: 10px;
+  width: 220px;
+}
+
+.main .map .filters .filter .css-yk16xz-control {
+  border-radius: 0 12px 12px 0;
+  box-shadow: var(--box-shadow);
+  border: none;
+}
+
+.main .map .filters .filter .css-1wa3eu0-placeholder {
+  color: var(--base-color);
+}
+
 .main .sidebar {
   display: none;
   position: absolute;
@@ -365,7 +387,7 @@ p {
 
 .main .map .station .station-inner .horizontal-navigation {
   border-bottom: 1px solid var(--border-color);
-  margin-bottom: var(--padding);
+  margin-bottom: 20px;
 }
 
 .main .map .station .station-inner .horizontal-navigation .nav-item {
@@ -385,6 +407,11 @@ p {
 .main .map .station .station-inner .horizontal-navigation .nav-item.active {
   color: var(--base-color);
   border-bottom: 2px solid var(--base-color);
+}
+
+.main .map .station .station-inner .content-inner {
+  max-height: calc(100% - 155px);
+  overflow: auto;
 }
 
 .main .map .station .station-inner .content-inner .item {
@@ -414,25 +441,30 @@ p {
   width: calc(100% - 160px);
 }
 
-.main .map .station .station-inner .content-inner .download-buttons a {
-  display: inline-block;
-  border: 1px solid var(--base-color);
-  cursor: pointer;
-  margin-right: 20px;
-  padding: 12px;
-  text-decoration: none;
+.main .map .station .station-inner .content-inner .download .title {
   color: var(--base-color);
-  border-radius: 12px;
-  margin-bottom: 20px;
+  font-weight: 600;
+  margin-bottom: -5px;
 }
 
-.main .map .station .station-inner .content-inner .download-buttons {
-  margin: 30px 0 10px 0;
-}
-
-.main .map .station .station-inner .content-inner .download-buttons a:hover {
-  background-color: var(--base-color);
+.main .map .station .station-inner .content-inner .download a {
+  display: inline-block;
+  cursor: pointer;
+  padding: 8px 12px;
+  text-decoration: none;
   color: white;
+  border-radius: 45px;
+  margin-bottom: 40px;
+  border: 1px solid var(--base-color);
+  background-color: var(--base-color);
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+.main .map .station .station-inner .content-inner .download a:hover {
+  background-color: white;
+  color: var(--base-color);
 }
 
 @media screen and (max-width: 800px) {
@@ -497,7 +529,11 @@ p {
     height: 100%;
     width: 100%;
     max-width: 100%;
-    padding: 10px;
+    padding: 10px 20px;
+  }
+
+  .main .map .filters {
+    top: 10px;
   }
 
   h1 {
