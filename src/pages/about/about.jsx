@@ -46,7 +46,7 @@ class About extends Component {
               <a href="https://zenodo.org/records/13961394">Zenodo</a>.
             </p>
             <div className="developer">
-              Website developed by James Runnalls @ Eawag
+              Website developed by <a href="https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/james-runnalls/show/">James Runnalls</a> @ Eawag
             </div>
           </div>
           <Footer />
