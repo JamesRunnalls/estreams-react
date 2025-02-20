@@ -64,6 +64,8 @@ class Station extends Component {
                           >
                             {basin_data[key]}
                           </a>
+                        ) : Array.isArray(basin_data[key]) ? (
+                          <div>{basin_data[key].join(", ")}</div>
                         ) : (
                           <div>
                             {basin_data[key].split(";").map((part, index) => (
