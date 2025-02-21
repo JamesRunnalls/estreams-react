@@ -218,7 +218,8 @@ class Home extends Component {
       return { value: p, label: p };
     });
     const time_options = [
-      { value: "<5", label: "<5" },
+      { value: "<0.9", label: "0" },
+      { value: "1-5", label: "1-5" },
       { value: "5-10", label: "5-10" },
       { value: "10-20", label: "10-20" },
       { value: "20-50", label: "20-50" },
