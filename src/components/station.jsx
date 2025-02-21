@@ -91,7 +91,7 @@ class Station extends Component {
                 </div>
                 <p>
                   This zip file contains the available catchment attibutes and
-                  metrelogical data (daily) needed for hydrological modeling.
+                  meteorological daily data needed for hydrological modeling.
                 </p>
                 <a
                   href={`${CONFIG.estreams_bucket}/data/${basin_data["basin_id"]}.zip`}
@@ -107,7 +107,7 @@ class Station extends Component {
                 <p>
                   We are unable to provide the streamflow data directly due to
                   data use restrictions. Please see <b>Provider info</b> for
-                  information on how to access the data directly.
+                  information on how to access the data directly. 
                 </p>
               </div>
               <p>
